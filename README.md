@@ -24,7 +24,7 @@ With Django Rest site has an authentication system (based on JWT tokens, also va
 of users who have access to each view of a view set)
 - Optional filtering with django-filter: 2 "datetime in range" fields, filter blog post by user field
 
-An example celery tasks is present which is scheduled to run every 3 hours.
+An example celery task is present which is scheduled to run every 3 hours.
 
 ## Frontend
 
