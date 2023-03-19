@@ -1,0 +1,61 @@
+version: '3.4'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: production-stage
+    volumes:
+      - static_volume:/home/app/web/static
+      - /etc/letsencrypt/:/etc/letsencrypt/:ro
+      - /var/www/html/.well-known/acme-challenge/:/home/app/web/.well-known/acme-challenge/:ro
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    depends_on:
+      - web
+  web:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: gunicorn WebAdmin.wsgi:application --bind 0.0.0.0:9000 --error-logfile /home/app/error.log --access-logfile /home/app/access.log --forwarded-allow-ips="*"
+    volumes:
+      - static_volume:/home/app/web/static
+    expose:
+      - 9000
+    env_file:
+      - env.prod
+    depends_on:
+      - db
+      - celery
+      - celery-beat
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - env.prod.db
+  celery:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: celery -A WebAdmin worker -l info
+    env_file:
+      - env.prod
+    depends_on:
+      - redis
+  celery-beat:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: celery -A WebAdmin beat -l info
+    env_file:
+      - env.prod
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
+volumes:
+  postgres_data:
+  static_volume:

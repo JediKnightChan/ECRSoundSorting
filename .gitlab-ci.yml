@@ -1,0 +1,47 @@
+variables:
+  TELEGRAM_BOT_TOKEN: $TELEGRAM_BOT_TOKEN
+  TELEGRAM_CHAT_ID: $TELEGRAM_CHAT_ID
+
+before_script:
+  - docker info
+  - docker compose --version
+  - cp /home/gitlab-runner/webadmin/env.* .
+  - cp /home/gitlab-runner/webadmin/*.pem ./backend/
+
+tg_describe_pipeline:
+  script:
+    - 'curl -X POST -H "Content-Type: application/json" -d "{\"chat_id\": \"$TELEGRAM_CHAT_ID\", \"parse_mode\": \"Markdown\", \"text\": \"STARTING SITE DEPLOYMENT: commit $CI_COMMIT_SHA ($CI_COMMIT_DESCRIPTION) \"}" https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: always
+    - when: never
+
+build_image:
+  script:
+    - docker-compose -f docker-compose.yml up -d --build
+    - 'curl -X POST -H "Content-Type: application/json" -d "{\"chat_id\": \"$TELEGRAM_CHAT_ID\", \"text\": \"DEPLOYMENT: 1: Builded image\"}" https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: always
+    - when: never
+
+collect_static_files:
+  script:
+    - docker-compose exec -T web python manage.py collectstatic --no-input
+    - 'curl -X POST -H "Content-Type: application/json" -d "{\"chat_id\": \"$TELEGRAM_CHAT_ID\", \"text\": \"DEPLOYMENT: 2: Collected static\"}" https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: always
+    - when: never
+
+migrate_database:
+  script:
+    - docker-compose exec -T web python manage.py migrate --no-input
+    - 'curl -X POST -H "Content-Type: application/json" -d "{\"chat_id\": \"$TELEGRAM_CHAT_ID\", \"text\": \"DEPLOYMENT: 3: Migrated database\"}" https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: always
+    - when: never
+
+after_script:
+  - docker container ls

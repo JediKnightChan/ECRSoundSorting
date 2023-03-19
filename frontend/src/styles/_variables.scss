@@ -1,0 +1,19 @@
+$table-cell-padding-y: 1rem;
+
+$spacer: 1rem !default;
+$card-title-spacer-y: $spacer * 1.25;
+
+$font-size-base: 1rem !default;
+$h1-font-size: $font-size-base * 2.5 !default;
+$h2-font-size: $font-size-base * 2.25 !default;
+$h3-font-size: $font-size-base * 2 !default;
+$h4-font-size: $font-size-base * 1.75 !default;
+$h5-font-size: $font-size-base * 1.5 !default;
+$h6-font-size: $font-size-base !default;
+
+$headings-font-weight: 400 !default;
+
+$placeholder-gray: #cfd3db !default;
+$input-placeholder-color: $placeholder-gray !default;
+$placeholder-opacity-max: 0.1 !default;
+$placeholder-opacity-min: 0.1 !default;
