@@ -55,12 +55,16 @@ class SoundItemReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         sound_review = serializer.save(user_profile=UserProfile.get_by_user(self.request.user))
         sound_review.sound.update_like_dislike_amount()
-        send_tg_message(f"Reviewed sound: https://drive.google.com/uc?id={sound_review.sound.gdrive_id}")
+        categories = ", ".join([str(c) for c in sound_review.categories.all()])
+        send_tg_message(
+            f"{self.request.user} reviewed sound {sound_review.sound}: {categories}: https://drive.google.com/uc?id={sound_review.sound.gdrive_id}")
 
     def perform_update(self, serializer):
         sound_review = serializer.save()
         sound_review.sound.update_like_dislike_amount()
-        send_tg_message(f"Updated sound review: https://drive.google.com/uc?id={sound_review.sound.gdrive_id}")
+        categories = ", ".join([str(c) for c in sound_review.categories.all()])
+        send_tg_message(
+            f"{self.request.user} updated sound review {sound_review.sound}: {categories}: https://drive.google.com/uc?id={sound_review.sound.gdrive_id}")
 
     def get_queryset(self):
         return SoundItemReview.objects.filter(user_profile=UserProfile.get_by_user(self.request.user)).order_by(
