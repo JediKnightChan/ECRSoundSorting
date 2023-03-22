@@ -56,8 +56,9 @@ export default {
       await this.afterLoadedAllData()
     },
     async fetchNextPageIfOnBottom(params_getter = null) {
+      let threshold = 30
       let bottomOfWindow =
-        document.documentElement.scrollTop + window.innerHeight ===
+        document.documentElement.scrollTop + window.innerHeight + threshold >=
         document.documentElement.offsetHeight
       let no_scroll_exists = document.documentElement.offsetHeight === 0
       if ((bottomOfWindow || no_scroll_exists) && !this.loading) {
