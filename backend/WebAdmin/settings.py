@@ -202,10 +202,9 @@ CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
 
 CELERY_BEAT_SCHEDULE = {
-    "sleep_and_wait": {
-        "task": "blog.tasks.sleep_and_wait",
+    "backup_db": {
+        "task": "common.tasks.backup_database",
         "schedule": crontab(minute=0, hour="*/3"),
-        "args": ("for_last_day",),
     }
 }
 
