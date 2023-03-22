@@ -1,4 +1,5 @@
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import generics, permissions
 from django.contrib.auth import get_user_model
@@ -22,6 +23,7 @@ class CreateUserView(generics.CreateAPIView):
     model = get_user_model()
     permission_classes = (SignupAccessPolicy,)
     serializer_class = UserSerializer
+    authentication_classes = [JWTAuthentication]
 
     def perform_create(self, serializer):
         user = serializer.save()
