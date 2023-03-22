@@ -1,12 +1,12 @@
 <template>
   <CAccordionItem :item-key="this.item_key">
     <CAccordionHeader @click="directory_click">
-      <CRow class="me-3" style="min-height: 50px">
-        <CCol class="d-flex align-items-center" md="auto" sm="12">
+      <CRow class="me-3 overflow-hidden" style="min-height: 50px">
+        <CCol class="d-flex align-items-center mt-2 mt-md-0" xs="auto">
           <CIcon icon="cil-folder"></CIcon>
         </CCol>
-        <CCol class="d-flex align-items-center mt-md-0 mt-2">
-          <span class="ms-3">{{ folder_name }}</span>
+        <CCol class="d-flex align-items-center mt-md-0 mt-2 overflow-hidden">
+          <span class="ms-0 ms-md-3">{{ folder_name }}</span>
         </CCol>
       </CRow>
     </CAccordionHeader>

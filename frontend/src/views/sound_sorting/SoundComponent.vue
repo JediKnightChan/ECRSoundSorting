@@ -1,14 +1,14 @@
 <template>
   <CAccordionItem :item-key="this.item_key">
     <CAccordionHeader @click="accordion_clicked">
-      <template></template>
       <CRow class="me-3" style="min-height: 50px">
-        <CCol class="d-flex align-items-center" md="auto" sm="12">
+        <CCol class="d-flex align-items-center" md="auto" sm="6">
           <audio
             ref="myaudio"
             controls
             :src="item.sound_file"
             style="border-radius: 50px"
+            class="resizable-audio"
           ></audio>
         </CCol>
         <CCol class="d-flex align-items-center mt-md-0 mt-2">
@@ -28,7 +28,7 @@
     </CAccordionHeader>
     <CAccordionBody v-if="can_review">
       <CRow>
-        <CCol md="4">
+        <CCol md="4" class="mt-2 mt-md-0">
           <CFormLabel for="soundCategories">Categories</CFormLabel>
           <multiselect
             v-model="categories_value"
@@ -38,13 +38,13 @@
             multiple
           ></multiselect>
         </CCol>
-        <CCol md="4">
+        <CCol md="4" class="mt-2 mt-md-0">
           <CFormLabel for="soundTextDesc"
             >Text description (not recommended)
           </CFormLabel>
           <CFormInput type="text" v-model="text_description"></CFormInput>
         </CCol>
-        <CCol md="3">
+        <CCol md="3" class="mt-2 mt-md-0">
           <label class="mb-2">This audio file is useful</label>
           <br />
           <span>
@@ -70,7 +70,7 @@
             </CButton>
           </span>
         </CCol>
-        <CCol class="container-fluid">
+        <CCol class="container-fluid mt-4 mt-lg-0">
           <CLink
             v-c-tooltip="{
               content: 'Send review',
@@ -248,4 +248,13 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.resizable-audio {
+}
+
+@media only screen and (max-width: 600px) {
+  .resizable-audio {
+    width: 100%;
+  }
+}
+</style>

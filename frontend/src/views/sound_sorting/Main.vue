@@ -35,7 +35,7 @@
         </CCardBody>
       </CCard>
     </CCol>
-    <CCol md="6" sm="12">
+    <CCol md="6" sm="12" class="my-4 my-sm-0">
       <CCard>
         <CCardBody>
           <CRow class="my-4">

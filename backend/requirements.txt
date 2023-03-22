@@ -34,5 +34,6 @@ requests==2.27.1
 s3transfer==0.5.2
 six==1.16.0
 sqlparse==0.4.2
+tqdm==4.65.0
 urllib3==1.26.9
 django-dbbackup==4.0.2
