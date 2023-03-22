@@ -5,8 +5,42 @@ import {
   AUTH_BLACKLIST_TOKEN_API,
   AUTH_GET_TOKEN_API,
   AUTH_REFRESH_TOKEN_API,
+  fetch_api_json,
   fetch_auth_json,
+  GAME_SOUND_CATEGORIES_API_LINK,
 } from '@/common/api_endpoints'
+
+const gameSoundCategoriesModule = {
+  state: {
+    categories: null,
+  },
+  mutations: {
+    setCategories(state, new_categories) {
+      state.categories = new_categories
+    },
+  },
+  actions: {
+    async retrieveCategories(context) {
+      if (context.state.categories === null) {
+        const res = await fetch_api_json(GAME_SOUND_CATEGORIES_API_LINK)
+        const data = await res.json()
+        if (data.results) {
+          context.commit('setCategories', data.results)
+        }
+      }
+      if (context.state.categories === null) {
+        return []
+      } else {
+        return context.state.categories
+      }
+    },
+  },
+  getters: {
+    state(state) {
+      return state
+    },
+  },
+}
 
 const authenticationModule = {
   state: {
@@ -54,7 +88,6 @@ const authenticationModule = {
       })
       let wrong_cred = res.status !== 200
       const data = await res.json()
-      console.log('Rec data', data)
       if (data.access && data.refresh) {
         context.commit('updateLocalStorage', {
           access: data.access,
@@ -104,5 +137,5 @@ export default createStore({
     },
   },
   actions: {},
-  modules: { authenticationModule },
+  modules: { authenticationModule, gameSoundCategoriesModule },
 })

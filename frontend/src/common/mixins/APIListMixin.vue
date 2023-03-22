@@ -15,6 +15,8 @@ export default {
       total_item_count: null,
       loading: false,
       loaded_all_data: false,
+
+      api_call_in_progress: false,
     }
   },
   methods: {
@@ -95,6 +97,29 @@ export default {
       }
       this.total_item_count++
     },
+    async make_api_call() {
+      if (this.api_call_in_progress) {
+        return
+      }
+      this.api_call_in_progress = true
+      switch (this.loading_mode) {
+        case 'on_mounted_all':
+          await this.fetchAllData(this.params_getter)
+          break
+        case 'on_mounted_one':
+          await this.fetchPageFromAPI(this.params_getter)
+          break
+        case 'pagination':
+          await this.loadItemsUntilScroll(this.params_getter)
+          this.bindEndlessScroll()
+          break
+        case 'custom':
+          break
+        default:
+          break
+      }
+      this.api_call_in_progress = false
+    },
   },
   computed: {
     loaded_item_count() {
@@ -102,22 +127,7 @@ export default {
     },
   },
   async mounted() {
-    switch (this.loading_mode) {
-      case 'on_mounted_all':
-        await this.fetchAllData(this.params_getter)
-        break
-      case 'on_mounted_one':
-        await this.fetchPageFromAPI(this.params_getter)
-        break
-      case 'pagination':
-        await this.loadItemsUntilScroll(this.params_getter)
-        this.bindEndlessScroll()
-        break
-      case 'custom':
-        break
-      default:
-        break
-    }
+    await this.make_api_call()
   },
 }
 </script>

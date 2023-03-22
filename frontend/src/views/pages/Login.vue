@@ -7,14 +7,14 @@
             <CCard class="p-4">
               <CCardBody>
                 <CForm>
-                  <h1>Вход</h1>
-                  <p class="text-medium-emphasis">Войдите в свой аккаунт</p>
+                  <h1>Log In</h1>
+                  <p class="text-medium-emphasis">Login into your account</p>
                   <CInputGroup class="mb-3">
                     <CInputGroupText>
                       <CIcon icon="cil-user" />
                     </CInputGroupText>
                     <CFormInput
-                      placeholder="Логин"
+                      placeholder="Login"
                       autocomplete="username"
                       v-model="username"
                     />
@@ -25,7 +25,7 @@
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Пароль"
+                      placeholder="Password"
                       autocomplete="current-password"
                       v-model="password"
                     />
@@ -38,8 +38,8 @@
                   <br />
 
                   <CAlert color="danger" v-if="wrong_cred"
-                    >Пожалуйста, введите корректные логин и пароль. Учтите, что
-                    они чувствительны к регистру.
+                    >Please, enter correct username and password. Take into
+                    account that lowercase / uppercase is important.
                   </CAlert>
 
                   <CRow>
@@ -50,12 +50,14 @@
                         class="px-4"
                         :disabled="!login_enabled"
                         @click="login_user"
-                        >Войти
+                        >Log in
                       </CButton>
                     </CCol>
                     <CCol :xs="6" class="text-right">
                       <CButton type="button" color="link" class="px-0">
-                        Забыли пароль?
+                        <a :href="$router.resolve({ name: 'Signup' }).href"
+                          >Forgot your password?</a
+                        >
                       </CButton>
                     </CCol>
                   </CRow>
@@ -65,14 +67,19 @@
             <CCard class="text-white bg-primary py-5" style="width: 44%">
               <CCardBody class="text-center">
                 <div>
-                  <h2>Регистрация</h2>
+                  <h2>Signup</h2>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    To participate in the sound sorting for Eternal Crusade:
+                    Resurrection, please, register an account, it is required
+                    for security reasons. No additional verification for it
+                    (like email) is required.
                   </p>
                   <CButton color="light" variant="outline" class="mt-3">
-                    Зарегистрироваться
+                    <a
+                      :href="$router.resolve({ name: 'Signup' }).href"
+                      class="no-deco-link"
+                      >Sign Up</a
+                    >
                   </CButton>
                 </div>
               </CCardBody>
@@ -106,7 +113,6 @@ export default {
   methods: {
     recaptcha_verified(response) {
       this.recaptcha_value = response
-      console.log('Verified', this.recaptcha_value)
     },
     async login_user() {
       this.wrong_cred = false
@@ -118,11 +124,10 @@ export default {
       if (this.wrong_cred) {
         this.$refs.recaptcha.recaptchaExpired()
       } else {
-        let redirect_url = this.$router.resolve({ name: 'Blog' }).href
+        let redirect_url = this.$router.resolve({ name: 'Main' }).href
         if (this.$router.currentRoute.value.query.next) {
           redirect_url = '#' + this.$router.currentRoute.value.query.next
         }
-        console.log(redirect_url)
         window.location.href = redirect_url
         window.location.reload()
       }

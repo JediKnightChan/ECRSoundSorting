@@ -10,7 +10,7 @@
               Такая страница не была обнаружена
             </p>
           </div>
-          <a :href="$router.resolve({ name: 'Blog' }).href"
+          <a :href="$router.resolve({ name: 'Main' }).href"
             >Вернуться на главную страницу</a
           >
         </CCol>

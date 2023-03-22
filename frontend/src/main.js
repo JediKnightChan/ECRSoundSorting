@@ -21,6 +21,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js'
+import { Multiselect } from 'vue-multiselect'
 Chart.register(
   LineController,
   LineElement,
@@ -37,17 +38,18 @@ Chart.register(
 const app = createApp(App)
 
 router.beforeEach((to, from, next) => {
-  console.log(from, to)
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    to.meta.requiresAuth !== false
+  ) {
     if (!store.getters.loggedIn) {
-      console.log('Not logged in, redirect')
       next({ name: 'Login', query: { next: to.fullPath } })
     } else {
       next()
     }
   } else if (to.matched.some((record) => record.meta.requiresNotAuth)) {
     if (store.getters.loggedIn) {
-      next({ name: 'Blog' })
+      next({ name: 'Main' })
     } else {
       next()
     }
@@ -62,4 +64,6 @@ app.use(CoreuiVue)
 app.provide('icons', icons)
 app.component('CIcon', CIcon)
 app.component('CirclesToRhombusesSpinner', CirclesToRhombusesSpinner)
+app.component('multiselect', Multiselect)
+
 app.mount('#app')

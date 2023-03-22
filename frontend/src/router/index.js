@@ -15,16 +15,30 @@ const routes = [
       {
         path: '/browse',
         name: 'Dashboard',
-        redirect: '/browse/blog/',
+        redirect: '/browse/main/',
         component: EmptyLayout,
         meta: {
           requiresAuth: true,
         },
         children: [
           {
-            path: 'blog/',
-            name: 'Blog',
-            component: () => import('@/views/blog/Blog'),
+            path: 'main/',
+            name: 'Main',
+            component: () => import('@/views/sound_sorting/Main.vue'),
+            meta: {
+              requiresAuth: false,
+            },
+          },
+          {
+            path: 'sound_sorting/',
+            name: 'Sound Sorting',
+            component: () =>
+              import('@/views/sound_sorting/GameSoundExplorer.vue'),
+          },
+          {
+            path: 'bounties/',
+            name: 'Bounties',
+            component: () => import('@/views/sound_sorting/Bounties.vue'),
           },
         ],
       },
@@ -52,6 +66,14 @@ const routes = [
           requiresNotAuth: true,
         },
         component: () => import('@/views/pages/Login'),
+      },
+      {
+        path: 'signup',
+        name: 'Signup',
+        meta: {
+          requiresNotAuth: true,
+        },
+        component: () => import('@/views/pages/Signup.vue'),
       },
       {
         path: 'logout',

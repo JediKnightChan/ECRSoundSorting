@@ -6,7 +6,7 @@
     <CDropdownMenu class="pt-0">
       <CDropdownItem>
         <CIcon icon="cil-lock-locked" />
-        <a :href="$router.resolve({ name: 'Logout' }).href">Выход</a>
+        <a :href="$router.resolve({ name: 'Logout' }).href">Log out</a>
       </CDropdownItem>
     </CDropdownMenu>
   </CDropdown>

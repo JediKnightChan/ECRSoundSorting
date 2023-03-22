@@ -9,8 +9,8 @@
       </CHeaderBrand>
       <CHeaderNav class="d-none d-md-flex me-auto">
         <CNavItem class="px-3">
-          <CNavLink :href="$router.resolve({ name: 'Blog' }).href"
-            >Главная страница</CNavLink
+          <CNavLink :href="$router.resolve({ name: 'Main' }).href"
+            >Instruction</CNavLink
           >
         </CNavItem>
       </CHeaderNav>

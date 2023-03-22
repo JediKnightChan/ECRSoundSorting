@@ -3,10 +3,6 @@ import django_filters
 from .models import BlogPost
 
 
-class StringInFilter(django_filters.BaseInFilter, django_filters.CharFilter):
-    pass
-
-
 class BlogPostFilter(django_filters.FilterSet):
     created_timestamp = django_filters.DateFromToRangeFilter()
     last_edited_timestamp = django_filters.DateFromToRangeFilter()

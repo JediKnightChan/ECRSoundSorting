@@ -1,6 +1,6 @@
 <template>
   <vue-recaptcha
-    sitekey="CHANGEME"
+    sitekey="6LfbQfsbAAAAAHSMSz0jtyaZG5hFPRRYkeduVs3X "
     size="normal"
     theme="light"
     @verify="recaptchaVerified"

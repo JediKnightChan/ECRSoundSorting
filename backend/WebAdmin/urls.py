@@ -21,7 +21,8 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     path('', RedirectView.as_view(url='api/blog/'), name='index'),
     path('admin/', admin.site.urls),
-    path('auth/', include('auth.urls')),
+    path('auth/', include('myauth.urls')),
     path('oauth2/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    path('api/blog/', include('blog.urls'))
+    path('api/blog/', include('blog.urls')),
+    path('api/sounds/', include('sound_sorting.urls'))
 ]

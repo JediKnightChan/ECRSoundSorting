@@ -28,7 +28,6 @@ class BodySavingJSONParser(BaseParser):
         try:
             decoded_stream = codecs.getreader(encoding)(stream)
             decoded_content = decoded_stream.read()
-            print(decoded_content)
             # Saving decoded request original body to original_body
             setattr(request, 'original_body', decoded_content)
             parse_constant = json.strict_constant if self.strict else None

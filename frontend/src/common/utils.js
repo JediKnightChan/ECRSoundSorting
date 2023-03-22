@@ -4,7 +4,6 @@ import ruLocale from 'time-delta/locales/ru'
 timeDelta.addLocale(ruLocale)
 
 function format_url_with_get_params(base_url, params) {
-  console.log(base_url, location)
   let url = new URL(base_url, location)
   if (!params) {
     return url
