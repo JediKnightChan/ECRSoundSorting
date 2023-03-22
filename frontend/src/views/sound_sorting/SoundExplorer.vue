@@ -2,6 +2,9 @@
   <CCard>
     <CCardBody>
       <h3 class="mb-2">Folder: {{ current_folder_name }}</h3>
+      <h5 class="mb-2" v-if="total_sound_amount !== null">
+        Sounds amount: {{ total_sound_amount }}
+      </h5>
 
       <div class="mb-2" v-if="can_review">
         <CFormCheck
@@ -19,6 +22,7 @@
         ></DirectoriesComponent>
         <SoundsComponent
           @audio_pseudo_clicked="on_audio_pseudo_clicked"
+          @total_sound_amount_changed="on_total_sound_amount_changed"
           v-if="current_folder"
           :current_folder="current_folder"
           :hide_reviewed="hide_reviewed"
@@ -60,6 +64,7 @@ export default {
       parent_folder: null,
       latest_audio_el: null,
       hide_reviewed: true,
+      total_sound_amount: null,
     }
   },
   methods: {
@@ -82,6 +87,9 @@ export default {
         }
         this.latest_audio_el = audio_el
       }
+    },
+    on_total_sound_amount_changed(new_amount) {
+      this.total_sound_amount = new_amount
     },
   },
   async mounted() {

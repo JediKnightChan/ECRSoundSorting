@@ -199,14 +199,14 @@ export default {
         await Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: `Ответ успешно сохранён`,
+          title: `Answer successfly sent`,
           showConfirmButton: false,
           timer: 1000,
         })
       } else {
         await Swal.fire({
           icon: 'error',
-          title: `Ошибка`,
+          title: `Error`,
           text: JSON.stringify(data),
         })
       }

@@ -30,7 +30,7 @@ export default {
   },
   mixins: [APIListMixin],
   components: { CenterSpinner, SoundComponent },
-  emits: ['audio_pseudo_clicked'],
+  emits: ['audio_pseudo_clicked', 'total_sound_amount_changed'],
   data() {
     return {
       api_first_page_link: this.get_api_link(),
@@ -43,6 +43,9 @@ export default {
     },
     hide_reviewed() {
       this.refresh_as_url_changed()
+    },
+    total_item_count() {
+      this.$emit('total_sound_amount_changed', this.total_item_count)
     },
   },
   methods: {
