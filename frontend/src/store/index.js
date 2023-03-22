@@ -24,12 +24,9 @@ const gameSoundCategoriesModule = {
     async retrieveCategories(context) {
       if (context.state.categories === null) {
         const res = await fetch_api_json(
-          format_url_with_get_params(
-            fetch_api_json(GAME_SOUND_CATEGORIES_API_LINK),
-            {
-              limit: 1000,
-            },
-          ),
+          format_url_with_get_params(GAME_SOUND_CATEGORIES_API_LINK, {
+            limit: 1000,
+          }),
         )
         const data = await res.json()
         if (data.results) {
