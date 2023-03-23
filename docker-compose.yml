@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   frontend:
+    restart: always
     build:
       context: .
       dockerfile: frontend/Dockerfile
@@ -16,6 +17,7 @@ services:
     depends_on:
       - web
   web:
+    restart: always
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -31,12 +33,14 @@ services:
       - celery
       - celery-beat
   db:
+    restart: always
     image: postgres:13.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - env.prod.db
   celery:
+    restart: always
     build:
       context: .
       dockerfile: backend/Dockerfile
@@ -46,6 +50,7 @@ services:
     depends_on:
       - redis
   celery-beat:
+    restart: always
     build:
       context: .
       dockerfile: backend/Dockerfile
