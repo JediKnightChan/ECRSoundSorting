@@ -29,16 +29,20 @@ services:
     env_file:
       - env.prod
     depends_on:
-      - db
+      - postgres
       - celery
       - celery-beat
-  db:
+  postgres:
     restart: always
     image: postgres:13.0-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - env.prod.db
+  postgres-backup:
+    image: eeshugerman/postgres-backup-s3:15
+    env_file:
+      - env.prod.db.backup
   celery:
     restart: always
     build:
