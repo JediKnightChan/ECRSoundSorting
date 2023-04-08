@@ -65,6 +65,7 @@ services:
     depends_on:
       - redis
   redis:
+    restart: always
     image: redis:alpine
 volumes:
   postgres_data:
