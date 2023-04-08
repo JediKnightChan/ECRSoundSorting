@@ -40,6 +40,7 @@ services:
     env_file:
       - env.prod.db
   postgres-backup:
+    restart: always
     image: eeshugerman/postgres-backup-s3:15
     env_file:
       - env.prod.db.backup
