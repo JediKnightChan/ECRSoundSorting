@@ -11,7 +11,7 @@
             class="resizable-audio"
           ></audio>
         </CCol>
-        <CCol class="d-flex align-items-center mt-md-0 mt-2">
+        <CCol md="auto" sm="6" class="d-flex align-items-center mt-md-0 mt-2">
           <span class="ms-3"
             ><a :href="item.gdrive_link" target="_blank">{{
               item.name
@@ -23,6 +23,15 @@
           <span class="ms-3">
             {{ sound_dislikes }} <CIcon icon="cil-thumb-down"
           /></span>
+        </CCol>
+        <CCol v-if="this.is_admin" md="12" class="mt-2">
+          <CRow>
+            <CCol v-for="item in top_categories" :key="item.name" md="auto">
+              <CButton color="light" class="mt-2">
+                {{ item.name }} <CBadge color="danger">{{ item.count }}</CBadge>
+              </CButton>
+            </CCol>
+          </CRow>
         </CCol>
       </CRow>
     </CAccordionHeader>
@@ -149,26 +158,33 @@ export default {
     },
     async load_existing_answer() {
       let res = await fetch_api_json(
-        format_url_with_get_params(SOUND_REVIEWS_API_LINK, {
+        format_url_with_get_params(SOUND_REVIEWS_API_LINK + this.item.id, {
           sound: this.item.id,
         }),
       )
       let data = await res.json()
-      if (data.count > 0) {
-        let answer = data.results[0]
+      let answer = data
 
-        this.text_description = answer.text_review
-        this.is_sound_useful = answer.is_useful
-        this.previous_answer_id = answer.id
+      this.text_description = answer.text_review
+      this.is_sound_useful = answer.is_useful
+      this.previous_answer_id = answer.id
 
-        // Categories
-        if (!this.categories_options) {
-          await this.update_categories_options()
-        }
-        this.categories_value = this.categories_options.filter((x) =>
-          answer.categories.includes(x.id),
-        )
+      // Categories
+      if (!this.categories_options) {
+        await this.update_categories_options()
       }
+      this.categories_value = this.categories_options.filter((x) =>
+        answer.categories.includes(x.id),
+      )
+    },
+    async get_top_categories() {
+      let res = await fetch_api_json(
+        GET_GAME_SOUND_DETAILS_API_LINK(this.item.id) +
+          'get_suggested_categories/',
+        'GET',
+      )
+      let data = await res.json()
+      this.top_categories = data.categories
     },
     async send_answer() {
       let body_data = {
@@ -243,6 +259,7 @@ export default {
     },
   },
   async mounted() {
+    await this.get_top_categories()
     await this.update_categories_options()
   },
 }

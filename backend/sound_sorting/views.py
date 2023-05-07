@@ -33,10 +33,13 @@ class SoundItemViewSet(viewsets.ReadOnlyModelViewSet):
     @action(methods=["GET"], detail=True)
     def get_suggested_categories(self, request, *args, **kwargs):
         sound_item = self.get_object()
-        q = SoundCategory.objects.filter(sound_reviews__sound=sound_item).alias(
+        q = SoundCategory.objects.filter(sound_reviews__sound=sound_item).annotate(
             nitem=Count('sound_reviews')
-        ).order_by('-nitem')
-        return {"categories": [sc.name for sc in q[:5]]}
+        ).order_by('-nitem')[:5]
+        catergories = []
+        for sc in q:
+            catergories.append({ "name": sc.name, "count": sc.nitem })
+        return Response({"categories": catergories}, status=status.HTTP_200_OK)
 
 
 class SoundCategoryViewSet(viewsets.ReadOnlyModelViewSet):
