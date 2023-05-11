@@ -5,6 +5,7 @@
     :item_key="'sound' + item.id"
     :item="item"
     :can_review="can_review"
+    :is_admin="is_admin"
     @audio_pseudo_clicked="on_audio_pseudo_clicked"
   ></SoundComponent>
   <CenterSpinner v-if="loading"></CenterSpinner>
@@ -25,6 +26,9 @@ export default {
       type: Boolean,
     },
     can_review: {
+      type: Boolean,
+    },
+    is_admin: {
       type: Boolean,
     },
   },
