@@ -24,7 +24,7 @@
             {{ sound_dislikes }} <CIcon icon="cil-thumb-down"
           /></span>
         </CCol>
-        <CCol v-if="this.is_admin" md="12" class="mt-2">
+        <CCol v-if="is_admin && top_categories" md="12" class="mt-2">
           <CRow>
             <CCol v-for="item in top_categories" :key="item.name" md="auto">
               <CButton color="light" class="mt-2">
@@ -124,6 +124,10 @@ export default {
     can_review: {
       type: Boolean,
     },
+    is_admin: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['audio_pseudo_clicked'],
   data() {
@@ -134,6 +138,7 @@ export default {
       previous_answer_id: null,
       categories_value: null,
       categories_options: [],
+      top_categories: null,
       text_description: '',
       is_sound_useful: true,
 
@@ -158,24 +163,24 @@ export default {
     },
     async load_existing_answer() {
       let res = await fetch_api_json(
-        format_url_with_get_params(SOUND_REVIEWS_API_LINK + this.item.id, {
+        format_url_with_get_params(SOUND_REVIEWS_API_LINK, {
           sound: this.item.id,
         }),
       )
       let data = await res.json()
-      let answer = data
-
-      this.text_description = answer.text_review
-      this.is_sound_useful = answer.is_useful
-      this.previous_answer_id = answer.id
-
-      // Categories
-      if (!this.categories_options) {
-        await this.update_categories_options()
+      if (data.count > 0) {
+        let answer = data.results[0]
+        this.text_description = answer.text_review
+        this.is_sound_useful = answer.is_useful
+        this.previous_answer_id = answer.id
+        // Categories
+        if (!this.categories_options) {
+          await this.update_categories_options()
+        }
+        this.categories_value = this.categories_options.filter((x) =>
+          answer.categories.includes(x.id),
+        )
       }
-      this.categories_value = this.categories_options.filter((x) =>
-        answer.categories.includes(x.id),
-      )
     },
     async get_top_categories() {
       let res = await fetch_api_json(

@@ -27,6 +27,7 @@
           :current_folder="current_folder"
           :hide_reviewed="hide_reviewed"
           :can_review="can_review"
+          :is_admin="is_admin"
         ></SoundsComponent>
       </CAccordion>
     </CCardBody>
@@ -55,6 +56,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    is_admin: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -63,7 +68,7 @@ export default {
       current_folder_name: null,
       parent_folder: null,
       latest_audio_el: null,
-      hide_reviewed: true,
+      hide_reviewed: !this.is_admin,
       total_sound_amount: null,
     }
   },

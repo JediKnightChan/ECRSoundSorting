@@ -30,6 +30,7 @@ export default {
     },
     is_admin: {
       type: Boolean,
+      default: false,
     },
   },
   mixins: [APIListMixin],

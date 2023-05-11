@@ -1,6 +1,6 @@
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, response
 from rest_framework.decorators import action
 
 from common.telegram import send_tg_message
@@ -36,10 +36,11 @@ class SoundItemViewSet(viewsets.ReadOnlyModelViewSet):
         q = SoundCategory.objects.filter(sound_reviews__sound=sound_item).annotate(
             nitem=Count('sound_reviews')
         ).order_by('-nitem')[:5]
-        catergories = []
+        categories = []
         for sc in q:
-            catergories.append({ "name": sc.name, "count": sc.nitem })
-        return Response({"categories": catergories}, status=status.HTTP_200_OK)
+            categories.append({ "name": sc.name, "count": sc.nitem })
+        print(categories)
+        return response.Response({"categories": categories}, status=status.HTTP_200_OK)
 
 
 class SoundCategoryViewSet(viewsets.ReadOnlyModelViewSet):
