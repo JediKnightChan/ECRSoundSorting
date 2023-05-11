@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from common.serializers import NonDBSerializer
 from myauth.models import UserProfile
 from .models import GameFolder, SoundItem, SoundCategory, SoundItemReview
 

@@ -38,8 +38,7 @@ class SoundItemViewSet(viewsets.ReadOnlyModelViewSet):
         ).order_by('-nitem')[:5]
         categories = []
         for sc in q:
-            categories.append({ "name": sc.name, "count": sc.nitem })
-        print(categories)
+            categories.append({"name": sc.name, "count": sc.nitem})
         return response.Response({"categories": categories}, status=status.HTTP_200_OK)
 
 

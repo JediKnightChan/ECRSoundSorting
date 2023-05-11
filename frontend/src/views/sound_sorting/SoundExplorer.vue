@@ -13,6 +13,15 @@
         ></CFormCheck>
       </div>
 
+      <div v-if="is_admin && can_review" class="my-3">
+        <multiselect
+          v-model="categories_value"
+          :options="categories_options"
+          label="name"
+          track-by="id"
+        ></multiselect>
+      </div>
+
       <CAccordion ref="accordion">
         <DirectoriesComponent
           v-if="current_folder"
@@ -28,6 +37,7 @@
           :hide_reviewed="hide_reviewed"
           :can_review="can_review"
           :is_admin="is_admin"
+          :categories_value="categories_value"
         ></SoundsComponent>
       </CAccordion>
     </CCardBody>
@@ -70,6 +80,9 @@ export default {
       latest_audio_el: null,
       hide_reviewed: !this.is_admin,
       total_sound_amount: null,
+
+      categories_value: null,
+      categories_options: [],
     }
   },
   methods: {
@@ -96,6 +109,9 @@ export default {
     on_total_sound_amount_changed(new_amount) {
       this.total_sound_amount = new_amount
     },
+    async update_categories_options() {
+      this.categories_options = await this.$store.dispatch('retrieveCategories')
+    },
   },
   async mounted() {
     let res = await fetch_api_json(
@@ -119,6 +135,7 @@ export default {
       this.current_folder = game_root.id
       this.current_folder_name = game_root.name
     }
+    await this.update_categories_options()
   },
 }
 </script>

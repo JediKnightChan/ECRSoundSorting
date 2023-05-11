@@ -32,6 +32,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    categories_value: {
+      type: Object,
+      default: null,
+    },
   },
   mixins: [APIListMixin],
   components: { CenterSpinner, SoundComponent },
@@ -52,12 +56,20 @@ export default {
     total_item_count() {
       this.$emit('total_sound_amount_changed', this.total_item_count)
     },
+    categories_value() {
+      this.refresh_as_url_changed()
+    },
   },
   methods: {
     get_api_link() {
+      console.log(this.categories_value)
       return format_url_with_get_params(GAME_SOUNDS_API_LINK, {
         parent_folder: this.current_folder,
         hide_reviewed: this.hide_reviewed,
+        category:
+          this.categories_value && this.categories_value.id !== undefined
+            ? this.categories_value.id
+            : null,
       })
     },
     refresh_as_url_changed() {

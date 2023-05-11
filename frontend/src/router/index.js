@@ -36,12 +36,6 @@ const routes = [
               import('@/views/sound_sorting/GameSoundExplorer.vue'),
           },
           {
-            path: 'sound_sorting/admin/',
-            name: 'Sound Sorting Admin',
-            component: () =>
-              import('@/views/sound_sorting/GameSoundExplorerAdmin.vue'),
-          },
-          {
             path: 'bounties/',
             name: 'Bounties',
             component: () => import('@/views/sound_sorting/Bounties.vue'),

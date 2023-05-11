@@ -17,6 +17,7 @@ class GameFolderFilter(django_filters.FilterSet):
 
 class SoundItemFilter(django_filters.FilterSet):
     hide_reviewed = django_filters.BooleanFilter(method='hide_reviewed_filter', label='Hide reviewed')
+    category = django_filters.NumberFilter(method='category_filter', label='Sound category')
 
     class Meta:
         model = SoundItem
@@ -30,6 +31,13 @@ class SoundItemFilter(django_filters.FilterSet):
         if wants_hide_reviews:
             queryset = queryset.filter(~Q(sound_reviews__user_profile=user_profile))
         return queryset
+
+    def category_filter(self, queryset, *args, **kwargs):
+        category = args[1]
+        if category < 0:
+            return queryset
+        else:
+            return queryset.filter(sound_reviews__categories__id=category)
 
 
 class SoundItemReviewFilter(django_filters.FilterSet):
